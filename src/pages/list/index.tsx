@@ -8,7 +8,7 @@ export default function List() {
     return (
        <View style={styles.container}>
         <View style={styles.header}>
-            <Text style={styles.greeting}>Bom dia, Lucas!</Text>
+            <Text style={styles.greeting}>Bom dia, <Text style={{fontWeight: 'bold'}}>Lucas!</Text></Text>
             <View style={styles.boxInput}>
             <Input IconLeft={MaterialIcons} iconLeftName="search"></Input>
             </View>
