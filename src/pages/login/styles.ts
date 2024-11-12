@@ -18,10 +18,10 @@ export const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 37
     },
+   
     boxBottom: {
         height: Dimensions.get('window').height / 3,
         width: '100%',
-        marginTop: 30,
         alignItems: 'center',
     },
     logo: {

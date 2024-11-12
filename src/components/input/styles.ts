@@ -6,12 +6,12 @@ export const styles = StyleSheet.create({
         height: 45,
         borderWidth: 1,
         borderRadius: 40,
-        marginTop: 10,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 5,
         backgroundColor: themes.colors.lightGray,
-        borderColor: themes.colors.lightGray
+        borderColor: themes.colors.lightGray,
+        marginBottom: 20
     },
     input: {
         width: '90%',
@@ -22,7 +22,6 @@ export const styles = StyleSheet.create({
     titleInput: {
         marginLeft: 5,
         color: themes.colors.gray,
-        marginTop: 20
     },
     Icon: {
         width: '100%'

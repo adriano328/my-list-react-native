@@ -12,8 +12,8 @@ export default function Login() {
 
     const navigation = useNavigation<NavigationProp<any>>();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('lucas@gmail.com');
+    const [password, setPassword] = useState('12345');
     const [showPassword, setShowPassWord] = useState(true);
     const [loading,setLoading]           = useState(false);
 

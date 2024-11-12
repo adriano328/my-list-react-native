@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import { AntDesign, Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { themes } from '../../global/themes';
+import { AuthContextList } from '../../context/authContext_list';
 
 interface Props {
   state: any; 
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const TabBar: React.FC<Props> = ({ state, navigation }) => {
+
+    const {onOpen} = useContext<any>(AuthContextList)
 
     const go = (ScreenName: string) => {
         navigation.navigate(ScreenName)
@@ -20,7 +23,7 @@ const TabBar: React.FC<Props> = ({ state, navigation }) => {
       <TouchableOpacity style={styles.tabItem} onPress={() => go("List")}>
         <AntDesign name="bars" style={{ opacity: state.index == 0 ? 1 : 0.3, color: themes.colors.primary, fontSize: 32 }} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.tabItemButton}>
+      <TouchableOpacity style={styles.tabItemButton} onPress={() => onOpen()}>
        <View style={{width: '100%', left: 10, top: 4, }}>
         <Entypo name="plus" size={40} color={"#ffff"}></Entypo>
        </View>
