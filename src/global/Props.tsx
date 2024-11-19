@@ -2,7 +2,7 @@ interface AuthContextType {
     taskList: Array<PropCard>,
     onOpen: void,
     // handleEdit: Function,
-    // handleDelete: Function
+    handleDelete: Function
 }
 
 type PropCard = {

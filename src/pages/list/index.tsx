@@ -2,26 +2,47 @@ import React, { useContext, useRef } from "react";
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from "./styles";
 import { Input } from "../../components/input";
-import { MaterialIcons } from '@expo/vector-icons'
+import { AntDesign, MaterialIcons } from '@expo/vector-icons'
 import { Ball } from "../../components/Ball";
 import { Flag } from "../../components/flag";
 import { themes } from "../../global/themes";
 import { AuthContextList } from "../../context/authContext_list";
 import { formatDateToBr } from "../../global/function";
 import { Swipeable } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function List() {
-    const { taskList } = useContext<AuthContextType>(AuthContextList);
+    const { taskList, handleDelete } = useContext<AuthContextType>(AuthContextList);
 
-    // Correctly type the swipeableRefs array
     const swipeableRefs = useRef<(Swipeable | null)[]>([]);
+    const renderRightActions = () => {
+        return (<View style={styles.button}>
+            <AntDesign name="delete" size={20} color={'#fff'}></AntDesign>
+        </View>)
+    }
+
+    const renderLeftActions = () => {
+        return (<View style={styles.buttonEdit}>
+            <AntDesign name="edit" size={20} color={'#fff'}></AntDesign>
+        </View>)
+    }
+
+    const handleSwipeOpen = (directions: 'right'|'left', item: any, index: number) => {
+        if(directions == 'right') {
+            handleDelete(item)
+            swipeableRefs.current[index]?.close()
+        } else {
+            //
+        }
+    }
 
     const _renderCard = (item: PropCard, index: number) => {
         const color = item.flag === 'Opcional' ? themes.colors.blueLigth : themes.colors.red;
 
         return (
-            <Swipeable ref={(ref) => (swipeableRefs.current[index] = ref)} key={index}
-            >
+            <Swipeable ref={(ref) => swipeableRefs.current[index] = ref} key={index}
+                renderRightActions={renderRightActions} renderLeftActions={renderLeftActions}
+                onSwipeableOpen={(directions) => handleSwipeOpen(directions, item, index)}>
                 <View style={styles.card}>
                     <View style={styles.rowCard}>
                         <View style={styles.rowCardLeft}>

@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     },
     header: {
         width: '100%',
-        height: Dimensions.get('window').height/5,
+        height: Dimensions.get('window').height / 5,
         backgroundColor: themes.colors.primary,
         paddingHorizontal: 25,
         justifyContent: 'center'
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     },
     card: {
         width: '100%',
-        height: 60,
+        height: 80,
         backgroundColor: '#fff',
         marginTop: 6,
         borderRadius: 10,
@@ -51,5 +51,21 @@ export const styles = StyleSheet.create({
     },
     descriptionCard: {
         color: themes.colors.gray
+    },
+    button: {
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 80,
+        marginVertical: 10,
+        borderRadius: 10
+    },
+    buttonEdit: {
+        backgroundColor: themes.colors.blueLigth,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 80,
+        marginVertical: 10,
+        borderRadius: 10
     }
 })
