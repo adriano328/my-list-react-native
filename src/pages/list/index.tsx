@@ -12,7 +12,7 @@ import { Swipeable } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function List() {
-    const { taskList, handleDelete } = useContext<AuthContextType>(AuthContextList);
+    const { taskList, handleDelete, handleEdit } = useContext<AuthContextType>(AuthContextList);
 
     const swipeableRefs = useRef<(Swipeable | null)[]>([]);
     const renderRightActions = () => {
@@ -30,10 +30,11 @@ export default function List() {
     const handleSwipeOpen = (directions: 'right'|'left', item: any, index: number) => {
         if(directions == 'right') {
             handleDelete(item)
-            swipeableRefs.current[index]?.close()
         } else {
-            //
+            handleEdit(item)
         }
+        swipeableRefs.current[index]?.close()
+
     }
 
     const _renderCard = (item: PropCard, index: number) => {

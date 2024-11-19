@@ -87,7 +87,7 @@ export const AuthProviderList = (props: any): any => {
     }
     try {
       const newItem: TaskItem = {
-        item: Date.now(),
+        item: item !== 0? item : Date.now(),
         title,
         description,
         flag: selectedFlag,
@@ -102,7 +102,12 @@ export const AuthProviderList = (props: any): any => {
 
       const storageData = await AsyncStorage.getItem('taskList');
       let taskList: TaskItem[] = storageData ? JSON.parse(storageData) : [];
-      taskList.push(newItem);
+      const itemIndex = taskList.findIndex((task) => task.item == newItem.item)
+      if(itemIndex >= 0) {
+        taskList[itemIndex] = newItem
+      } else {
+        taskList.push(newItem);
+      }
       await AsyncStorage.setItem('taskList', JSON.stringify(taskList));
       setTaskList(taskList);
       setData();
@@ -133,6 +138,21 @@ export const AuthProviderList = (props: any): any => {
       console.log('Erro ao excluir', error);
     }
   };
+
+  const handleEdit = async (itemToEdit: TaskItem) => {
+    try {
+      setTitle(itemToEdit.title)
+      setDescription(itemToEdit.description)
+      setItem(itemToEdit.item)
+      setSelectedFlag(itemToEdit.flag)
+      const timeLimite = new Date(itemToEdit.timeLimit);
+      setselectedDate(timeLimite);
+      setselectedTime(timeLimite);
+      onOpen();
+    } catch (error) {
+      console.log('Erro ao editar');
+    }
+  }
 
   const _container = () => {
     return (
@@ -207,7 +227,7 @@ export const AuthProviderList = (props: any): any => {
   };
 
   return (
-    <AuthContextList.Provider value={{ onOpen, taskList, handleDelete }}>
+    <AuthContextList.Provider value={{ onOpen, taskList, handleDelete, handleEdit }}>
       {props.children}
       <Modalize
         ref={modalizeRef}
