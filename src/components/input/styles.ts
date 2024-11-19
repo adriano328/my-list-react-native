@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
         width: '90%',
         height: '100%',
         borderRadius: 40,
-        paddingLeft: 5
+        paddingLeft: 5,
     },
     titleInput: {
         marginLeft: 5,

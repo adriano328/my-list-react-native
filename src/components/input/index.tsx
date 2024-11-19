@@ -1,5 +1,5 @@
 import React, { forwardRef, Fragment, LegacyRef } from "react";
-import { Text, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native';
+import { StyleProp, Text, TextInput, TextInputProps, TextStyle, TouchableOpacity, View } from 'react-native';
 import { FontAwesome, MaterialIcons, Octicons } from '@expo/vector-icons'
 import { themes } from "../../global/themes";
 import { styles } from "./styles";
@@ -15,7 +15,9 @@ type Props = TextInputProps & {
     iconRightName?: string,
     title?: string,
     onIconLeftPress?: () => void,
-    onIconRightPress?: () => void
+    onIconRightPress?: () => void,
+    height?: number,
+    labelStyle?: StyleProp<TextStyle>,
 };
 
 export const Input = forwardRef((Props: Props, ref: LegacyRef<TextInput> | null) => {
@@ -28,6 +30,8 @@ export const Input = forwardRef((Props: Props, ref: LegacyRef<TextInput> | null)
         title,
         onIconLeftPress,
         onIconRightPress,
+        labelStyle,
+        height,
         ...rest
     } = Props;
 
@@ -53,15 +57,15 @@ export const Input = forwardRef((Props: Props, ref: LegacyRef<TextInput> | null)
 
     return (
         <Fragment>
-            <Text style={styles.titleInput}>{title}</Text>
-            <View style={[styles.boxInput, {paddingLeft: calculatorSizePaddingLeft()}]}>
+            <Text style={[styles.titleInput, labelStyle]}>{title}</Text>
+            <View style={[styles.boxInput, {paddingLeft: calculatorSizePaddingLeft(), height: height || 40, padding: 5}]}>
                 {IconLeft && iconLeftName && (
                     <TouchableOpacity onPress={onIconLeftPress} style={styles.Button}>
                         <IconLeft name={iconLeftName as any} size={20} color={themes.colors.gray} style={styles.Icon}></IconLeft>
                     </TouchableOpacity>
                 )}
               
-                <TextInput style={[styles.input, {width: calculatorSizeWidth()}]} {...rest}/>
+                <TextInput style={[styles.input, {width: calculatorSizeWidth(), height: '100%'}]} {...rest}/>
                 {IconRight && iconRightName && (
                     <TouchableOpacity onPress={onIconRightPress} style={styles.Button}>
                         <IconRight name={iconRightName as any} size={20} color={themes.colors.gray} style={styles.Icon}></IconRight>
