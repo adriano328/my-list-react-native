@@ -28,7 +28,8 @@ export const AuthProviderList = (props: any): any => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimerPicker] = useState(false);
   const [item, setItem] = useState(0);
-  const [taskList, setTaskList] = useState<TaskItem[]>([]); // Estado tipado
+  const [taskList, setTaskList] = useState<TaskItem[]>([]); 
+  const [taskListBackup, setTaskListBackup] = useState<TaskItem[]>([]); 
 
   const onOpen = () => {
     modalizeRef?.current?.open();
@@ -110,6 +111,7 @@ export const AuthProviderList = (props: any): any => {
       }
       await AsyncStorage.setItem('taskList', JSON.stringify(taskList));
       setTaskList(taskList);
+      setTaskListBackup(taskList)
       setData();
       onClose();
     } catch (error) {
@@ -122,8 +124,30 @@ export const AuthProviderList = (props: any): any => {
       const storageData = await AsyncStorage.getItem('taskList');
       const taskList: TaskItem[] = storageData ? JSON.parse(storageData) : [];
       setTaskList(taskList);
+      setTaskListBackup(taskList)
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  const filter = (t: string) => {
+    // if(taskList.length == 0) return ;
+    if(!t) return;
+
+    const array = taskListBackup
+    const campos = ['title', 'description']
+
+    if(t) {
+      const searchTerm = t.trim().toLowerCase();
+      const filteredArray = array.filter((item: any) => {
+          for(let i=0; i < campos.length; i ++) {
+            if(item[campos[i]].trim().toLowerCase().includes(searchTerm)) 
+              return true;
+          }
+      })
+      setTaskList(filteredArray)
+    } else {
+      setTaskList(array)
     }
   }
 
@@ -134,6 +158,7 @@ export const AuthProviderList = (props: any): any => {
       const updatedTaskList = taskList.filter(item => item.item !== itemToDelete.item);
       await AsyncStorage.setItem('taskList', JSON.stringify(updatedTaskList));
       setTaskList(updatedTaskList);
+      setTaskListBackup(updatedTaskList)
     } catch (error) {
       console.log('Erro ao excluir', error);
     }
@@ -227,7 +252,7 @@ export const AuthProviderList = (props: any): any => {
   };
 
   return (
-    <AuthContextList.Provider value={{ onOpen, taskList, handleDelete, handleEdit }}>
+    <AuthContextList.Provider value={{ onOpen, taskList, handleDelete, handleEdit, filter }}>
       {props.children}
       <Modalize
         ref={modalizeRef}

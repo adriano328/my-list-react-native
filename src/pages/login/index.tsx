@@ -27,9 +27,10 @@ export default function Login() {
 
             if(email === 'lucas@gmail.com' && password === '12345'){
                 return navigation.reset({routes:[{name :'BottomRoutes'}]});
+            } else {
+                Alert.alert('Atenção','E-mail ou senha invalida!')
             }
 
-            Alert.alert('Atenção','E-mail ou senha invalida!')
         } catch (error) {
             console.log(error)
         }finally{

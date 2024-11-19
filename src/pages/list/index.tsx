@@ -12,7 +12,7 @@ import { Swipeable } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function List() {
-    const { taskList, handleDelete, handleEdit } = useContext<AuthContextType>(AuthContextList);
+    const { taskList, handleDelete, handleEdit, filter } = useContext<AuthContextType>(AuthContextList);
 
     const swipeableRefs = useRef<(Swipeable | null)[]>([]);
     const renderRightActions = () => {
@@ -66,7 +66,7 @@ export default function List() {
             <View style={styles.header}>
                 <Text style={styles.greeting}>Bom dia, <Text style={{ fontWeight: 'bold' }}>Lucas!</Text></Text>
                 <View style={styles.boxInput}>
-                    <Input IconLeft={MaterialIcons} iconLeftName="search" />
+                    <Input IconLeft={MaterialIcons} onChangeText={(t) => filter(t)} iconLeftName="search" />
                 </View>
             </View>
             <View style={styles.boxList}>
