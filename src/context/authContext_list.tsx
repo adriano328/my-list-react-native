@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View, KeyboardAvoidingView, Platform } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View, KeyboardAvoidingView, Platform, Alert } from "react-native";
 import Modalize from "react-native-modalize";
 import { AntDesign, MaterialIcons } from '@expo/vector-icons'
 import { Input } from "../components/input";
@@ -19,7 +19,8 @@ export const AuthProviderList = (props: any): any => {
     const [selectedTime, setselectedTime] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimerPicker] = useState(false);
-    const [item, setItem] = useState(0)
+    const [item, setItem] = useState(0);
+    const [taskList, setTaskList] = useState([]);
 
     const onOpen = () => {
         modalizeRef?.current?.open();
@@ -29,8 +30,17 @@ export const AuthProviderList = (props: any): any => {
         modalizeRef?.current?.close();
     }
 
+    const setData = () => {
+        setTitle(''),
+        setDescription('')
+        setSelectedFlag('Urgente'),
+        setselectedDate(new Date())
+        setselectedTime(new Date())
+        setItem(0)
+    }
+
     useEffect(() => {
-        // onOpen()
+        get_TaskList()
     }, [])
 
     const flags = [
@@ -41,10 +51,11 @@ export const AuthProviderList = (props: any): any => {
     const _renderFlags = () => {
         return (
             flags.map((item, index) => (
-                <TouchableOpacity key={index}>
+                <TouchableOpacity key={index} onPress={() => {
+                    setSelectedFlag(item.caption)
+                }}>
                     <Flag caption={item.caption} color={item.color}
-                    // selected={}
-                    />
+                        selected={item.caption == selectedFlag} />
                 </TouchableOpacity>
             )))
     }
@@ -57,19 +68,45 @@ export const AuthProviderList = (props: any): any => {
         setselectedTime(date);
     };
 
-    const handleSave = () => {
-        const newItem = {
-            item: Date.now(),
-            title,
-            description,
-            flags: selectedFlag,
-            timeLimite: new Date(
-                selectedDate.getFullYear(),
-                selectedDate.getMonth(),
-                selectedDate.getDate(),
-                selectedDate.getHours(),
-                selectedDate.getMinutes(),
-            ).toISOString()
+    const handleSave = async () => {
+        if(!title || !description || !selectedFlag) {
+            return Alert.alert('Atenção!','Preencha os campos corretamente.')
+        }
+        try {
+            const newItem = {
+                item: Date.now(),
+                title,
+                description,
+                flag: selectedFlag,
+                timeLimit: new Date(
+                    selectedDate.getFullYear(),
+                    selectedDate.getMonth(),
+                    selectedDate.getDate(),
+                    selectedDate.getHours(),
+                    selectedDate.getMinutes(),
+                ).toISOString()
+            }
+
+            const storageData = await AsyncStorage.getItem('taskList');
+            let taskList = storageData ? JSON.parse(storageData) : [];
+            taskList.push(newItem)
+            await AsyncStorage.setItem('taskList', JSON.stringify(taskList))
+            setTaskList(taskList)
+            setData()
+            onClose()
+        } catch (error) {
+            console.log('Erro ao salvar o item', error)
+        }
+    }
+
+    async function get_TaskList() {
+        try {
+            const storageData = await AsyncStorage.getItem('taskList');
+            const  taskList = storageData ? JSON.parse(storageData) : [];
+            setTaskList(taskList)
+        } catch (error) {
+            console.log(error);
+            
         }
     }
 
@@ -90,7 +127,7 @@ export const AuthProviderList = (props: any): any => {
 
                         <Input title="Titulo" labelStyle={styles.label} value={title} onChangeText={setTitle} />
                         <Input title="Descrição" labelStyle={styles.label} height={100} multiline
-                            numberOfLines={5} value={description} onChangeText={setDescription} textAlignVertical="top"/>
+                            numberOfLines={5} value={description} onChangeText={setDescription} textAlignVertical="top" />
                         <View style={{ flexDirection: 'row', gap: 10, width: '100%' }}>
                             <TouchableOpacity onPress={() => setShowDatePicker(true)} style={{ width: 200 }}>
                                 <Input
@@ -128,7 +165,7 @@ export const AuthProviderList = (props: any): any => {
     }
 
     return (
-        <AuthContextList.Provider value={{ onOpen }}>
+        <AuthContextList.Provider value={{ onOpen, taskList }}>
             {props.children}
             <Modalize
                 ref={modalizeRef}

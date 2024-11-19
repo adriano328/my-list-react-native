@@ -58,7 +58,7 @@ export const Input = forwardRef((Props: Props, ref: LegacyRef<TextInput> | null)
     return (
         <Fragment>
             <Text style={[styles.titleInput, labelStyle]}>{title}</Text>
-            <View style={[styles.boxInput, {paddingLeft: calculatorSizePaddingLeft(), height: height || 40, padding: 5}]}>
+            <View style={[styles.boxInput, {paddingLeft: calculatorSizePaddingLeft(), height: height || 40}]}>
                 {IconLeft && iconLeftName && (
                     <TouchableOpacity onPress={onIconLeftPress} style={styles.Button}>
                         <IconLeft name={iconLeftName as any} size={20} color={themes.colors.gray} style={styles.Icon}></IconLeft>

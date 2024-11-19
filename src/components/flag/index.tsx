@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, View } from "react-native";
 import { styles } from "./styles";
 type Props = {
     caption: string,
@@ -8,8 +8,8 @@ type Props = {
 }
 export  function Flag({...rest}:Props){
     return(
-       <TouchableOpacity style={[styles.container, {backgroundColor: rest?.color}, rest?.selected && {borderWidth: 2}]}>
+       <View style={[styles.container, {backgroundColor: rest?.color}, rest?.selected && {borderWidth: 2}]}>
         <Text style={{color: '#ffff'}}>{rest.caption}</Text>
-       </TouchableOpacity>
+       </View>
     );
 }

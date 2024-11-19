@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
         width: '100%',
         height: 45,
         borderWidth: 1,
-        borderRadius: 40,
+        borderRadius: 20,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: themes.colors.lightGray,
