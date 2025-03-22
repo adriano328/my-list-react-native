@@ -1,12 +1,23 @@
-import './gesture-handler';
-import { StyleSheet } from 'react-native';
-import Routes from './src/routes/index.routes';
-import { NavigationContainer } from '@react-navigation/native'
+import { StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeScreen from './src/screens/HomeScreen';
+import DetailsScreen from './src/screens/DetailScreen';
+
+export type RootStackParamList = {
+  HomeScreen: undefined;
+  Details: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Routes></Routes>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
@@ -14,8 +25,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    height: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
